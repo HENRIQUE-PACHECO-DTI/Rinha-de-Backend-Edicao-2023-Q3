@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>io.github.henriqueaguiiar</groupId>
-	<artifactId>rinhaDeBackend</artifactId>
+	<artifactId>mentoria-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>rinhaDeBackend</name>
 	<description>This project an a backend in java spring intended for mentoring to backend development</description>
@@ -63,6 +63,13 @@
 			<artifactId>spring-boot-starter-webmvc-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>com.github.f4b6a3</groupId>
+			<artifactId>uuid-creator</artifactId>
+			<version>5.2.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
