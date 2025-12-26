@@ -11,7 +11,7 @@ public class PersonMapper {
 
     public static Person  toEntity(PersonInputDTO personInputDTO){
         Person person = new Person();
-        person.setId( UuidCreator.getTimeOrderedEpoch());
+        person.setId(UuidCreator.getTimeOrderedEpoch().toString());
         person.setSurName(personInputDTO.getSurName());
         person.setName(personInputDTO.getName());
         person.setBornDate(personInputDTO.getBornDate());

@@ -20,7 +20,7 @@ import java.util.UUID;
 public class PersonOutputDTO {
 
 
-    private UUID id;
+    private String id;
     private String surName;
     private String name;
     private LocalDate bornDate;
@@ -35,11 +35,11 @@ public class PersonOutputDTO {
     public PersonOutputDTO() {
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
