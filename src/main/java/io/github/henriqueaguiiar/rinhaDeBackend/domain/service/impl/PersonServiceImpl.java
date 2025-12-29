@@ -73,9 +73,9 @@ public class PersonServiceImpl implements PersonService {
      *
      * Validações:
      * apelido:	obrigatório, único, string de até 32 caracteres.
-     * nome:obrigatório, string de até 100 caracteres.
-     * nascimento:	obrigatório, string para data no formato AAAA-MM-DD (ano, mês, dia).
-     * stack:	opcional, vetor de string com cada elemento sendo obrigatório e de até 32 caracteres.
+     * Nome: obrigatório, string de até 100 caracteres.
+     * Nascimento:	obrigatório, string para data no formato AAAA-MM-DD (ano, mês, dia).
+     * Stack:	opcional, vetor de string com cada elemento sendo obrigatório e de até 32 caracteres.
      * @param personInputDTO
      *
      */

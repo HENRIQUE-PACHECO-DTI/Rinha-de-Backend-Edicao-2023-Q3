@@ -6,6 +6,7 @@ import io.github.henriqueaguiiar.rinhaDeBackend.api.v1.dto.output.PersonOutputDT
 import io.github.henriqueaguiiar.rinhaDeBackend.domain.exception.CreatePersonException;
 import io.github.henriqueaguiiar.rinhaDeBackend.domain.exception.PersonNotFoundException;
 import io.github.henriqueaguiiar.rinhaDeBackend.domain.service.PersonService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 
 
-
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/person")
 public class PersonController {
@@ -34,8 +35,10 @@ public class PersonController {
     public ResponseEntity<?> createPerson(@RequestBody PersonInputDTO personInputDTO){
        try{
            var person =  personService.createPerson(personInputDTO);
+           log.info(">>createPerson Person Criada com sucesso!: " + person);
            return ResponseEntity.status(HttpStatus.CREATED).body(person);
        }catch (CreatePersonException e){
+           log.warn(">>createPerson Erro ao realizar a criação da Person: " + HttpStatus.BAD_REQUEST + "Erro: " + e.getMessage());
            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
        }
     }
