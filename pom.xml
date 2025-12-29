@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>io.github.henriqueaguiiar</groupId>
 	<artifactId>mentoria-backend</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.1.0</version>
 	<name>rinhaDeBackend</name>
 	<description>This project an a backend in java spring intended for mentoring to backend development</description>
 	<url/>
