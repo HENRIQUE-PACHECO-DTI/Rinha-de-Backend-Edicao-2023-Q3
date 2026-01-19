@@ -8,6 +8,7 @@ import io.github.henriqueaguiiar.rinhaDeBackend.domain.mapper.PersonMapper;
 import io.github.henriqueaguiiar.rinhaDeBackend.domain.model.Person;
 import io.github.henriqueaguiiar.rinhaDeBackend.domain.repository.PersonRepository;
 import io.github.henriqueaguiiar.rinhaDeBackend.domain.service.PersonService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,6 +24,7 @@ import java.util.List;
  */
 
 @Service
+@Slf4j
 public class PersonServiceImpl implements PersonService {
     private static final DateTimeFormatter BIRTHDATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -38,6 +40,7 @@ public class PersonServiceImpl implements PersonService {
     public PersonOutputDTO createPerson(PersonInputDTO personInputDTO) {
             validateInputPerson(personInputDTO);
             var personDatabase =  personMapper.toEntity(personInputDTO);
+            log.info("Salvando nova pessoa. ID: {}", personDatabase.getId());
             personRepository.save(personDatabase);
             return personMapper.toOutputDTO(personDatabase);
     }
@@ -50,6 +53,7 @@ public class PersonServiceImpl implements PersonService {
         for(Person person : persons){
             personOutputDTOList.add(personMapper.toOutputDTO(person));
         }
+        log.info("Recuperando todas as pessoas.  {}", personOutputDTOList);
         return  personOutputDTOList;
     }
 
@@ -60,6 +64,7 @@ public class PersonServiceImpl implements PersonService {
         for(Person person : personList){
             personOutputDTOList.add(personMapper.toOutputDTO(person));
         }
+        log.info("Recuperando todas as pessoas com o termo {}. {}",term, personOutputDTOList);
         return personOutputDTOList;
     }
 
@@ -67,6 +72,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public PersonOutputDTO getPersonById(String id){
         Person person = personRepository.findById(id).orElseThrow(() -> new PersonNotFoundException("Pessoa Não Encontrada com este Id"));
+        log.info("Recuperando pessoa com o ID: {}. {}", id, person);
         return personMapper.toOutputDTO(person);
     }
     /**
@@ -85,20 +91,24 @@ public class PersonServiceImpl implements PersonService {
     public void  validateInputPerson(PersonInputDTO personInputDTO){
 
         if(personInputDTO.getSurName() == null || personInputDTO.getSurName().isBlank()){
+            log.error("O campos sobrenome está vazio ou nulo {}", personInputDTO.getSurName());
             throw new CreatePersonException("O preenchimento do sobrenome é Obrigatorio");
         }
 
         if (personInputDTO.getSurName().length() > 32) {
+            log.error("O limite máximo do sobrenome é 32 caracteres {}", personInputDTO.getSurName().length());
             throw new CreatePersonException("O limite máximo do sobrenome é 32 caracteres");
         }
 
 
         if(personInputDTO.getName() == null || personInputDTO.getName().isBlank()){
+            log.error("O campos nome está vazio ou nulo {}", personInputDTO.getName());
             throw new CreatePersonException("O preenchimento do nome é Obrigatorio");
         }
 
 
         if (personInputDTO.getName().length() > 100) {
+            log.error("O limite máximo do nome é 100 caracteres {}", personInputDTO.getName().length());
             throw new CreatePersonException("O limite máximo do nome é 100 caracteres");
         }
 
@@ -106,6 +116,7 @@ public class PersonServiceImpl implements PersonService {
         if (personInputDTO.getStack() != null) {
             for (String stackItem : personInputDTO.getStack()) {
                 if (stackItem == null || stackItem.length() > 32) {
+                    log.error("Limite máximo de até 32 caracteres por item na Stack {}", stackItem);
                     throw new CreatePersonException("Limite máximo de até 32 caracteres por item na Stack");
                 }
             }
@@ -114,6 +125,7 @@ public class PersonServiceImpl implements PersonService {
         try {
             LocalDate.parse(personInputDTO.getBornDate(), BIRTHDATE_FORMATTER);
         } catch (DateTimeParseException e) {
+            log.error("A data de nascimento deve estar no formato AAAA-MM-DD {}", personInputDTO.getBornDate());
             throw new CreatePersonException("A data de nascimento deve estar no formato AAAA-MM-DD");
         }
     }
@@ -121,6 +133,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Integer contagemPessoas() {
         List<PersonOutputDTO> allPerson = getAllPerson();
+        log.info("Contagem total de pessoas: {}", allPerson.size());
         return allPerson.size();
     }
 }
