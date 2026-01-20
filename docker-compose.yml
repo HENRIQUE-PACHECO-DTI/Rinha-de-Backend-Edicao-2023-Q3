@@ -1,0 +1,43 @@
+version: "3.9"
+
+networks:
+  public:
+    driver: bridge
+
+services:
+  postgres:
+    image: postgres:16.3
+    container_name: rinha_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: rinha_db
+    ports:
+      - "5432:5432"
+    volumes:
+        - postgres_data:/var/lib/postgresql/data
+    networks:
+      - public
+
+  app:
+    container_name: rinha_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/rinha_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: true
+    ports:
+        - "8080:8080"
+    networks:
+      - public
+
+volumes:
+    postgres_data:
+
+
